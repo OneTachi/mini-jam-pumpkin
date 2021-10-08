@@ -1,10 +1,10 @@
 extends Node
 
 signal done_turn(type, option)
-onready var parent_node = get_node('../World')
+onready var parent_node = get_node('/root/World')
 
 var stats = {
-	'health': 0,
+	'health': 500,
 	'base_dmg': 20
 }
 
