@@ -4,7 +4,8 @@ var type_of_attack
 var total_chance
 
 var stats = {
-	'health': 1000
+	'health': 500,
+	'base_dmg': 20,
 }
 
 

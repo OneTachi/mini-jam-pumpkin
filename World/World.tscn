@@ -10,15 +10,67 @@ script = ExtResource( 3 )
 [node name="Player" type="Node2D" parent="."]
 script = ExtResource( 1 )
 
+[node name="Button" type="Button" parent="Player"]
+modulate = Color( 0.196078, 0, 0.968627, 1 )
+margin_left = 190.0
+margin_top = 191.0
+margin_right = 341.0
+margin_bottom = 247.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button2" type="Button" parent="Player"]
+modulate = Color( 1, 0, 0, 1 )
+margin_left = 435.0
+margin_top = 183.0
+margin_right = 586.0
+margin_bottom = 239.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button3" type="Button" parent="Player"]
+margin_left = 94.0
+margin_top = 363.0
+margin_right = 245.0
+margin_bottom = 419.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button4" type="Button" parent="Player"]
+margin_left = 315.0
+margin_top = 362.0
+margin_right = 466.0
+margin_bottom = 418.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button5" type="Button" parent="Player"]
+margin_left = 541.0
+margin_top = 360.0
+margin_right = 692.0
+margin_bottom = 416.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="Cerb" type="KinematicBody2D" parent="."]
 script = ExtResource( 2 )
 
 [node name="Chances" type="RichTextLabel" parent="Cerb"]
 margin_right = 221.0
-margin_bottom = 59.0
+margin_bottom = 134.0
 bbcode_enabled = true
 bbcode_text = "[color=red]HI![/color]"
 text = "HI!"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+[connection signal="pressed" from="Player/Button" to="Player" method="guard_input"]
+[connection signal="pressed" from="Player/Button2" to="Player" method="attack_input"]
+[connection signal="pressed" from="Player/Button3" to="Player" method="head_one_input"]
+[connection signal="pressed" from="Player/Button4" to="Player" method="head_two_input"]
+[connection signal="pressed" from="Player/Button5" to="Player" method="head_three_input"]
