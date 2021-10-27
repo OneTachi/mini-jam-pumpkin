@@ -11,16 +11,6 @@ var stats = {
 	'base_dmg': 20
 }
 
-func _ready():
-	self.connect('done_turn', parent_node, 'turn_manager')
-
-func guard(option):
-	if option == null:
-		return
-	
-	emit_signal('done_turn', 'guard', option)
-
-
 func input_manager(option, number = head_input):
 	type_of_attack = option
 	head_input = number

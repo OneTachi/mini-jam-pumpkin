@@ -5,7 +5,7 @@ var total_chance
 
 var stats = {
 	'health': 500,
-	'base_dmg': 20,
+	'base_dmg': 40,
 }
 
 

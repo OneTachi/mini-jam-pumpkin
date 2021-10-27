@@ -9,6 +9,8 @@ var cerb_att
 var hasCerbDoneTurn = false
 var text_status
 
+var dir_keys = ['ui_left', 'ui_right', 'ui_up', 'ui_down']
+
 enum {
 	guard,
 	attack
@@ -33,10 +35,11 @@ func turn_manager(type, option):
 				text_status = 'Missed Guard...'
 		
 		'attack':
-			take_damage(cerb, 10, player.stats.base_dmg,1)
+			take_damage(cerb, 20, player.stats.base_dmg,1)
 			take_damage(player, 30, cerb.stats.base_dmg, 1)
 			text_status = "Attacked and hit!"
 	do_cerb_turn(text_status)
+	check_win()
 
 func do_cerb_turn(status):
 	cerb_return = cerb.do_turn()
@@ -48,8 +51,20 @@ func do_cerb_turn(status):
 	 '\nCerburus Health: ' + str(cerb.stats.health) + '\nHealth: ' 
 	+ str(player.stats.health) + '\nStatus: ' + str(status))
 
-func do_player_turn(option, number):
-	turn_manager(option, number)
+func check_win():
+	if cerb.stats.health <= 0:
+		print('You Win!')
+	elif player.stats.health <= 0:
+		print('You lose...')
+
+#TODO
+func do_combat():
+	for i in range(5):
+		var keys = dir_keys.duplicate()
+		keys.shuffle()
+		var direction = keys.pop_front()
+	
+
 
 func take_damage(who, iRange, base, multiplier):
 	who.stats.health -= (randi() % iRange + base) * multiplier
