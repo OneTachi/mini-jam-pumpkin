@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Player/player.gd" type="Script" id=1]
 [ext_resource path="res://Cerberus/Cerburus.gd" type="Script" id=2]
 [ext_resource path="res://World/World.gd" type="Script" id=3]
+[ext_resource path="res://World/arrow.png" type="Texture" id=4]
 
 [node name="World" type="Node2D"]
 script = ExtResource( 3 )
@@ -69,6 +70,12 @@ text = "HI!"
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="Arrow" type="Sprite" parent="."]
+position = Vector2( 862, 291 )
+scale = Vector2( 18, 18 )
+texture = ExtResource( 4 )
+
 [connection signal="pressed" from="Player/Button" to="Player" method="guard_input"]
 [connection signal="pressed" from="Player/Button2" to="Player" method="attack_input"]
 [connection signal="pressed" from="Player/Button3" to="Player" method="head_one_input"]
