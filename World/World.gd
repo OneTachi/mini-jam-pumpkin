@@ -4,6 +4,7 @@ onready var cerb = $Cerb
 onready var player = $Player
 onready var chance_text = $Cerb/Chances
 onready var arrow_sprite = $Arrow
+onready var timer = $Timer
 
 var cerb_return
 var cerb_att
@@ -47,11 +48,14 @@ func turn_manager(type, option):
 			do_cerb_turn(text_status)
 		
 		'attack':
-			do_combat()
-			in_combat = true
-			
+			neededInputKey = null
 			if combat_turn > 5:
 				in_combat = false
+				won_combat = 0
+			else:
+				do_combat()
+				in_combat = true
+			
 				#TODO After battle stuff
 			
 			#take_damage(cerb, 20, player.stats.base_dmg,1)
@@ -77,26 +81,29 @@ func check_win():
 
 #TODO
 func do_combat():
-	if !combat_turn <= 5:
-		turn_manager('attack', null)
-		return
-	
 	var keys = dir_keys.duplicate()
 	keys.shuffle()
 	var direction = keys.pop_front()
 	neededInputKey = direction
 	pop_key(direction)
-	combat_turn += 1
 
 func pop_key(dir):
 	arrow_sprite.rotation_degrees = arrow_rotations[dir] 
+	timer.start(1)
 
 func handle_input(key):
 	if !in_combat:
 		return
-	if key == neededInputKey:
-		won_combat += 1
+	win_in_combat()
 
+func loss_in_combat():
+	turn_manager('attack', null)
+	combat_turn += 1
+
+func win_in_combat():
+	won_combat += 1
+	turn_manager('attack', null)
+	combat_turn += 1
 
 func take_damage(who, iRange, base, multiplier):
 	who.stats.health -= (randi() % iRange + base) * multiplier
@@ -105,5 +112,11 @@ func take_heal(who, iRange, base, multiplier):
 	who.stats.health += (randi() % iRange + base) * multiplier
 
 func _unhandled_input(event):
-	if event == InputEventKey:
-		handle_input(event)
+	if event is InputEventKey && neededInputKey != null:
+		if event.is_action_pressed(neededInputKey):
+			print('sent!')
+			handle_input(event)
+
+
+func _on_Timer_timeout():
+	loss_in_combat()
