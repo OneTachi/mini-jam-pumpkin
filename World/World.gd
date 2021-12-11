@@ -11,6 +11,8 @@ var cerb_att
 var hasCerbDoneTurn = false
 var text_status
 
+var debug_number = 0
+
 var dir_keys = ['ui_left', 'ui_right', 'ui_up', 'ui_down']
 var arrow_rotations = {
 	'ui_left': 180,
@@ -49,9 +51,10 @@ func turn_manager(type, option):
 		
 		'attack':
 			neededInputKey = null
-			if combat_turn > 5:
+			if combat_turn > 4:
 				in_combat = false
 				won_combat = 0
+				combat_turn = 0
 			else:
 				do_combat()
 				in_combat = true
@@ -86,6 +89,8 @@ func do_combat():
 	var direction = keys.pop_front()
 	neededInputKey = direction
 	pop_key(direction)
+	debug_number += 1
+	print(debug_number)
 
 func pop_key(dir):
 	arrow_sprite.rotation_degrees = arrow_rotations[dir] 
@@ -94,16 +99,23 @@ func pop_key(dir):
 func handle_input(key):
 	if !in_combat:
 		return
-	win_in_combat()
+	handle_one_combat_result(null)
+
+func handle_one_combat_result(result):
+	combat_turn += 1
+	timer.stop()
+	if result == 'loss':
+		loss_in_combat()
+	else:
+		win_in_combat()
 
 func loss_in_combat():
+	print('L')
 	turn_manager('attack', null)
-	combat_turn += 1
 
 func win_in_combat():
 	won_combat += 1
 	turn_manager('attack', null)
-	combat_turn += 1
 
 func take_damage(who, iRange, base, multiplier):
 	who.stats.health -= (randi() % iRange + base) * multiplier
@@ -114,9 +126,8 @@ func take_heal(who, iRange, base, multiplier):
 func _unhandled_input(event):
 	if event is InputEventKey && neededInputKey != null:
 		if event.is_action_pressed(neededInputKey):
-			print('sent!')
 			handle_input(event)
 
 
 func _on_Timer_timeout():
-	loss_in_combat()
+	handle_one_combat_result('loss')
