@@ -58,7 +58,7 @@ func turn_manager(type, option):
 			else:
 				do_combat()
 				in_combat = true
-			
+			update_text()
 				#TODO After battle stuff
 			
 			#take_damage(cerb, 20, player.stats.base_dmg,1)
@@ -76,6 +76,12 @@ func do_cerb_turn(status):
 	 '\nCerburus Health: ' + str(cerb.stats.health) + '\nHealth: ' 
 	+ str(player.stats.health) + '\nStatus: ' + str(status))
 
+func update_text():
+	chance_text.parse_bbcode('Head Chances: ' + str(cerb_return[1]) + ' ' 
+	+ str(cerb_return[2]) + ' ' + str(cerb_return[3]) +
+	 '\nCerburus Health: ' + str(cerb.stats.health) + '\nHealth: ' 
+	+ str(player.stats.health) + '\nStatus: ')
+
 func check_win():
 	if cerb.stats.health <= 0:
 		print('You Win!')
@@ -89,32 +95,28 @@ func do_combat():
 	var direction = keys.pop_front()
 	neededInputKey = direction
 	pop_key(direction)
-	debug_number += 1
-	print(debug_number)
+	#debug_number += 1
+	#print(debug_number)
 
 func pop_key(dir):
 	arrow_sprite.rotation_degrees = arrow_rotations[dir] 
-	timer.start(1)
+	timer.start(.5)
 
 func handle_input(key):
 	if !in_combat:
 		return
-	handle_one_combat_result(null)
+	handle_one_combat_result('won')
 
 func handle_one_combat_result(result):
+	if result != null:
+		won_combat += 1
+		take_damage(cerb, 20, 20, 1)
+		take_heal(player, 10, 5, 1)
+	else:
+		take_damage(player, 20, 10, 1)
+		take_heal(cerb, 10, 1, 1)
 	combat_turn += 1
 	timer.stop()
-	if result == 'loss':
-		loss_in_combat()
-	else:
-		win_in_combat()
-
-func loss_in_combat():
-	print('L')
-	turn_manager('attack', null)
-
-func win_in_combat():
-	won_combat += 1
 	turn_manager('attack', null)
 
 func take_damage(who, iRange, base, multiplier):
@@ -130,4 +132,4 @@ func _unhandled_input(event):
 
 
 func _on_Timer_timeout():
-	handle_one_combat_result('loss')
+	handle_one_combat_result(null)
