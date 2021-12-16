@@ -89,6 +89,7 @@ script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
 [connection signal="pressed" from="Player/Button" to="Player" method="guard_input"]
 [connection signal="pressed" from="Player/Button2" to="Player" method="attack_input"]
 [connection signal="pressed" from="Player/Button3" to="Player" method="head_one_input"]
